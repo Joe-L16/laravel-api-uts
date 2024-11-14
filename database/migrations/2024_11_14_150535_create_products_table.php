@@ -13,7 +13,6 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->unsignedBigInteger('customer_id');
             $table->integer('price');
-            $table->string('category')->nullable();
             $table->timestamps();
 
             // Foreign key constraint
