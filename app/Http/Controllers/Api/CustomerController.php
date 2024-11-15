@@ -1,115 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $data = Customer::get();
+        // Mengambil semua produk beserta penulisnya
+        $customers = Customer::with('customer')->get();
 
-        return response()->json(['data' => $data], 200);
-    }
-    //
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        // Mengembalikan data dalam format JSON
+        return response()->json($customers);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        // Validasi input menggunakan aturan dari model
         $validator = Validator::make($request->all(), Customer::rules('insert'));
-        Customer::customValidation($validator);
 
         if ($validator->fails()) {
             return response()->json(['message' => $validator->messages()], 400);
         }
 
         try {
-            $data = Customer::create($request->all());
+            // Membuat produk baru jika validasi berhasil
+            $customers = Customer::create($request->all());
 
-            return response()->json(['message' => 'Data berhasil disimpan', 'data' => $data], 200);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        try {
-            $data = Customer::find($id);
-
-            return response()->json(['data' => $data], 200);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        try {
-            $data = Customer::find($id);
-
-            return response()->json(['data' => $data], 200);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $validator = Validator::make($request->all(), Customer::rules('update'));
-        Customer::customValidation($validator);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->messages()], 400);
-        }
-
-        try {
-            $data = Customer::find($id);
-            $data->update($request->all());
-
-            return response()->json(['message' => 'Data berhasil diupdate', 'data' => $data]);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        try {
-            $data = Customer::find($id);
-            $data->delete();
-
-            return response()->json(['message' => 'Data berhasil dihapus'], 200);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Data berhasil disimpan', 'data' => $customers], 200);
+        } catch (\Throwable $customers) {
+            return response()->json(['message' => $customers->getMessage()], 500);
         }
     }
 }

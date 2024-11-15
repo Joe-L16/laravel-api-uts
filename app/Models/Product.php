@@ -2,18 +2,61 @@
 
 namespace App\Models;
 
+use Illuminate\Validation\Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Product extends Model
+class Customer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'customer_id', 'price'];
+    protected $fillable = ['name','product_id','birthdate',];
 
-    // Relasi Many-to-One dengan model Customer
-    public function customer()
+     // Relasi Many-to-One dengan model Customer
+     public function customer()
+     {
+         return $this->belongsTo(Customer::class);
+     }
+
+     /**
+     * Aturan validasi untuk model ini.
+     *
+     * @return array
+     */
+    public static function rules($process)
     {
-        return $this->belongsTo(Customer::class);
+        if ($process == 'insert') {
+            return [
+                'name' => 'required|string|max:225',
+                'price' => 'required|integer',
+            ];
+        } elseif ($process == 'update') {
+            return [
+                'name' => 'required|string|max:225',
+                'price' => 'required|integer',
+            ];
+        }
+    }
+
+    /**
+     * Mendaftarkan aturan validasi kustom.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public static function customValidation(Validator $validator)
+    {
+        $customAttributes = [
+            'name' => 'Nama',
+            'price' => 'Harga',
+        ];
+
+        $validator->addReplacer('required', function ($message, $attribute, $rule, $parameters) use ($customAttributes) {
+            return str_replace(':attribute', $customAttributes[$attribute], ':attribute harus diisi.');
+        });
+
+        $validator->addReplacer('price', function ($message, $attribute, $rule, $parameters) use ($customAttributes) {
+            return str_replace(':attribute', $customAttributes[$attribute], ':attribute harus berupa angka.');
+        });
     }
 }

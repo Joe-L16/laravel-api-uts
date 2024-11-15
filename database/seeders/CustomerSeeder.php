@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use App\Models\Customer;
 use Illuminate\Database\Seeder;
 
@@ -9,10 +10,17 @@ class CustomerSeeder extends Seeder
 {
     public function run()
     {
-        Customer::create(['name' => 'Customer 1', 'birthdate' => '1980-01-01']);
-        Customer::create(['name' => 'Customer 2', 'birthdate' => '1985-02-02']);
-        Customer::create(['name' => 'Customer 3', 'birthdate' => '1990-03-03']);
-        Customer::create(['name' => 'Customer 4', 'birthdate' => '1975-04-04']);
-        Customer::create(['name' => 'Customer 5', 'birthdate' => '1982-05-05']);
+        $products = Product::all();
+
+        $categorys = ['Electronics', 'Entertainment', 'Wearable', 'Accessories', 'Game', 'Smartphone'];
+
+        for ($i = 1; $i <= 10; $i++) {
+            Customer::create([
+                'name' => 'Product Title ' . $i,
+                'product_id' => $products->random()->id, // Menghubungkan customer dengan produk secara acak
+                'birthdate' => rand(1, 31), // Tanggal lahir secara acak
+                'category' => $categorys[array_rand($categorys)], // Mengambil category secara acak
+            ]);
+        }
     }
 }

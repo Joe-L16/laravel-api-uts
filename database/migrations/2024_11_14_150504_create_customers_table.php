@@ -11,6 +11,7 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('product_id');
             $table->date('birthdate');
             $table->timestamps();
         });
