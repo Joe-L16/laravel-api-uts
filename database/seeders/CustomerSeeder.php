@@ -12,11 +12,14 @@ class CustomerSeeder extends Seeder
     {
         $products = Product::all();
 
+        $categorys = ['Boy', 'Girl', 'Children', 'GrandPa', 'GrandMa'];
+
         for ($i = 1; $i <= 10; $i++) {
             Customer::create([
-                'name' => 'Product Title ' . $i,
+                'name' => 'Product Title '.$i,
                 'product_id' => $products->random()->id, // Menghubungkan customer dengan produk secara acak
-                'birthdate' => rand(1, 31), // Tanggal lahir secara acak
+                'birthdate' => fake()->date('Y-m-d'), // Generate tanggal lahir yang valid
+                'category' => $categorys[array_rand($categorys)], // Mengambil genre secara acak
             ]);
         }
     }
