@@ -9,7 +9,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        // Mengambil semua buku beserta penulisnya
+        // Mengambil semua produk beserta penulisnya
         $products = Product::with('author')->get();
 
         // Mengembalikan data dalam format JSON
@@ -21,7 +21,7 @@ class ProductController extends Controller
             // Validasi input menggunakan aturan dari model
              $validatedData = $request->validate(Product::rules());
 
-            // Membuat buku baru jika validasi berhasil
+            // Membuat produk baru jika validasi berhasil
             $products = Product::create($validatedData);
 
         return response()->json($products, 201); // Mengembalikan response JSON dengan status 201

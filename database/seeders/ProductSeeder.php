@@ -18,7 +18,7 @@ class ProductSeeder extends Seeder
             Product::create([
                 'name' => 'Customer Title ' . $i,
                 'customer_id' => $customers->random()->id, // Menghubungkan produk dengan customer secara acak
-                'price' => rand(100, 2000), // Tahun publikasi secara acak
+                'price' => rand(100, 2000), // Harga secara acak
                 'category' => $categorys[array_rand($categorys)], // Mengambil category secara acak
             ]);
         }
