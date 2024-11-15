@@ -19,7 +19,7 @@ class CustomerSeeder extends Seeder
                 'name' => 'Product Title '.$i,
                 'product_id' => $products->random()->id, // Menghubungkan customer dengan produk secara acak
                 'birthdate' => fake()->date('Y-m-d'), // Generate tanggal lahir yang valid
-                'category' => $categorys[array_rand($categorys)], // Mengambil genre secara acak
+                'category' => $categorys[array_rand($categorys)], // Mengambil kategori secara acak
             ]);
         }
     }
